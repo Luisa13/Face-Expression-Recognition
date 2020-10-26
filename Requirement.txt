@@ -1,0 +1,4 @@
+py-opencv >= 3.4.2
+flask
+keras
+tensorflow >=2.1.0
