@@ -6,7 +6,8 @@ class FaceRecognition:
     '''
     Creates the model to predict an emotion based on a camera capture
     '''
-    EMOTIONS = ['Angry', 'Disgust''Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+    # EMOTIONS = ['Angry', 'Disgust''Fear', 'Happy', 'Sad', 'Surprise', 'Neutral'] # Model 1
+    EMOTIONS = ["Angry", "Disgust", "Fear", "Happy", "Neutral", "Sad", "Surprise"] # Model 2
 
     def __init__(self, ser_file, weights):
         '''
@@ -17,12 +18,13 @@ class FaceRecognition:
         '''
         with open(ser_file, 'r') as json_file:
             # Load the model from a serialized file
-            self.model_json = json_file.read()
-            self.model = model_from_json(self.model_json)
+            model_json = json_file.read()
+            self.model = model_from_json(model_json)
 
-            # Once we loaded we can use the function defined in the jupyter file
-            self.model.load_weights(weights)
-            self.model._make_predict_function()
+        # Once we loaded we can use the function defined in the jupyter file
+        self.model.load_weights(weights)
+        self.model._make_predict_function()
+        self.prediction = ''
 
     def predict_emotion(self, img):
         '''

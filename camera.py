@@ -84,7 +84,7 @@ class Camera:
         Gets all the frames took by the camera after applying
         the prediction from the model and return it
 
-        :return:
+        :return: Image bytes
         '''
         # Capture frame-by-frame
         ret, frame = self.video_capture.read()

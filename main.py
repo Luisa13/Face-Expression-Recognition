@@ -29,6 +29,8 @@ def video():
 def main():
     v = Camera()
     v.run()
+
 if __name__ == "__main__":
     main()
+    #TODO: flask server --> deploy?
     # app.run(debug=True)
