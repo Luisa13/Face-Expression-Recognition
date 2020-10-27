@@ -26,6 +26,9 @@ def video():
         mimetype='multipart/x-mixed-replace; boundary=frame'
     )
 
-
+def main():
+    v = Camera()
+    v.run()
 if __name__ == "__main__":
-    app.run(debug=True)
+    main()
+    # app.run(debug=True)

@@ -1,10 +1,11 @@
 import cv2
 from model import FaceRecognition
 import logging
+import numpy as np
 import os
 
-json_file = 'FaceEmotionRecognition/model/serialization/model.json'
-weights = 'FaceEmotionRecognition/model/weights.h5'
+json_file = r'.\model\serialization\model.json'
+weights = r'.\model\weights.h5'
 classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 img_size = 48
 
@@ -26,7 +27,10 @@ class Camera:
         '''
         self.video_capture = cv2.VideoCapture(0)
         # self.classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-        # model = FaceRecognition(json_file, weights)
+        if not os.path.exists(json_file):
+            logging.error("The file does not exist")
+        else:
+            self.model = FaceRecognition(json_file, weights)
         # TODO logging parameters
 
     def __del__(self):
@@ -59,13 +63,14 @@ class Camera:
                 for (x, y, w, h) in faces:
                     face_detected = gray[y:y + h, x:x + w]
                     roi = cv2.resize(face_detected, (img_size, img_size))
-                    # TODO read prediction
+                    # Prediction
+                    pred_emotion = self.model.predict_emotion(roi[np.newaxis, :, :, np.newaxis])
 
                     # Draw the rectangle wrapping the face
                     start_point = (x, y)
                     end_point = (x + w, y + h)
                     image = cv2.rectangle(frame, start_point, end_point, (255, 0, 0), 3)
-                    image = cv2.putText(image, "HOLA", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+                    image = cv2.putText(image, pred_emotion, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
 
                 # Display the resulting frame
                 cv2.imshow('frame', image)
@@ -93,13 +98,14 @@ class Camera:
             for (x, y, w, h) in faces:
                 face_detected = gray[y:y + h, x:x + w]
                 roi = cv2.resize(face_detected, (img_size, img_size))
-                # TODO read prediction
+                # Prediction
+                pred_emotion = self.model.predict_emotion(roi[np.newaxis, :, :, np.newaxis])
 
                 # Draw the rectangle wrapping the face
                 start_point = (x, y)
                 end_point = (x + w, y + h)
                 image = cv2.rectangle(frame, start_point, end_point, (255, 0, 0), 3)
-                image = cv2.putText(image, "HOLA", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+                image = cv2.putText(image, pred_emotion, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
                 frame = image
 
         _, jpeg = cv2.imencode('.jpg', frame)
