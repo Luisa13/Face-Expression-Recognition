@@ -1,4 +1,4 @@
-# **EMOTION FACIAL RECOGNITION**
+# **Face Expression Recognition**
 
 > **WARNING**: this project and hence this explanation, is not ready yet but will be very soon!
 
